@@ -76,7 +76,7 @@ ENV NODE_ENV=production \
   PAPERCLIP_DEPLOYMENT_EXPOSURE=private \
   OPENCODE_ALLOW_ALL_MODELS=true
 
-VOLUME ["/paperclip"]
+# VOLUME removed: Railway uses its own volume system, mounted at /paperclip via Railway volume config
 EXPOSE 3100
 
 ENTRYPOINT ["docker-entrypoint.sh"]
