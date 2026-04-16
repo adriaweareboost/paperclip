@@ -22,8 +22,9 @@ if [ "$(id -g node)" -ne "$PGID" ]; then
     changed=1
 fi
 
-if [ "$changed" = "1" ]; then
-    chown -R node:node /paperclip
-fi
+# Railway-friendly: always ensure /paperclip is owned by node.
+# Railway mounts volumes as root by default; the original condition only
+# chowned on UID/GID remap, leaving the volume unwritable for the node user.
+chown -R node:node /paperclip || true
 
 exec gosu node "$@"
