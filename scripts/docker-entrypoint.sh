@@ -27,4 +27,20 @@ fi
 # chowned on UID/GID remap, leaving the volume unwritable for the node user.
 chown -R node:node /paperclip || true
 
+# Sync agent instructions from image to volume (combines _shared.md + each agent)
+INST_SRC="/app/agent-instructions"
+INST_DST="/paperclip/instances/default/agent-instructions"
+if [ -d "$INST_SRC" ] && [ -f "$INST_SRC/_shared.md" ]; then
+    mkdir -p "$INST_DST"
+    cp "$INST_SRC/_shared.md" "$INST_DST/_shared.md"
+    SHARED=$(cat "$INST_SRC/_shared.md")
+    for f in "$INST_SRC"/*.md; do
+        slug=$(basename "$f" .md)
+        [ "$slug" = "_shared" ] && continue
+        printf '%s\n\n---\n\n%s\n' "$SHARED" "$(cat "$f")" > "$INST_DST/$slug.md"
+        echo "Synced agent instructions: $slug.md"
+    done
+    chown -R node:node "$INST_DST" || true
+fi
+
 exec gosu node "$@"
