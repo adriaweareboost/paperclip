@@ -10,10 +10,12 @@ curl -s "$TOOLS_BASE_URL/tool/clickup/leads?status=new%20lead" -H "Authorization
 **If 0 matching tasks, EXIT immediately. No further tool calls.**
 
 ### Step 2 — Process each lead (max 5/run)
-1. `GET /tool/clickup/tasks/<id>` — extract: name, email, website, audit URL, top findings, score.
-2. Create email draft via `POST /tool/email/draft` (agentId: sdr-inbound, campaign: scanboost-first-touch). **Do NOT use /tool/email/send** — drafts go to admin review first:
+1. `GET /tool/clickup/tasks/<id>` — extract: email, website, audit URL, top findings, score.
+2. **Infer name from email**: if email has a clear human name (e.g. `juan.garcia@` → "Juan", `maria@` → "María"), use it. If unclear (`info@`, `admin@`, `hello@`, numbers, initials), do NOT guess — omit the name entirely.
+3. Create email draft via `POST /tool/email/draft` (agentId: sdr-inbound, campaign: scanboost-first-touch). **Do NOT use /tool/email/send** — drafts go to admin review first:
+   - **Subject**: NEVER include a person's name. Use: "3 cosas que vi en tu auditoría de {domain}" or "{score}/100 en {domain}".
    - **Language**: Spanish. **Tone**: direct, helpful, peer-level. **Length**: 4-6 lines max.
-   - **Structure**: greet by name, reference their audit score, list 3 findings as actionable improvements (not problems), CTA to Calendly `https://calendly.com/adria-vidal-prieto/30min`. Sign as "Adria (equipo Boost)".
+   - **Structure**: greet with name if inferred ("Hola Juan,") or without ("Hola,"). Reference audit score, list 3 findings as actionable improvements (not problems), CTA to Calendly. Do NOT sign with a name in the body — the signature block handles that.
    - If score > 85: acknowledge good state, suggest 1 advanced lever.
    - If no findings: anchor on the audit URL itself.
 3. `PATCH /tool/clickup/tasks/<id>` status -> `managing`.
