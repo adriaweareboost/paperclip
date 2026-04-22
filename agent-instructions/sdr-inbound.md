@@ -4,9 +4,9 @@
 
 ### Step 1 — Fetch & filter leads
 ```bash
-curl -s "$TOOLS_BASE_URL/tool/clickup/leads?status=new%20lead" -H "Authorization: Bearer $TOOLS_API_KEY" | jq '.tasks'
+curl -s "$TOOLS_BASE_URL/tool/clickup/leads?status=new%20lead&page=0" -H "Authorization: Bearer $TOOLS_API_KEY" | jq '.tasks'
 ```
-**CRITICAL FILTER**: Keep ONLY tasks where custom field "Lead Source (G)" = `$CLICKUP_OPT_LEADSOURCE_SCANBOOST`. Discard all others.
+**CRITICAL FILTER**: Keep ONLY tasks where custom field "Lead Source (G)" = `$CLICKUP_OPT_LEADSOURCE_SCANBOOST`. Discard all others. Do NOT paginate further — only process page 0.
 **If 0 matching tasks, EXIT immediately. No further tool calls.**
 
 ### Step 2 — Process each lead (max 5/run)
@@ -34,4 +34,4 @@ Create follow-up draft via `POST /tool/email/draft` — 2-line nudge (name + "ca
 - On insults, RGPD complaints, or "dame de baja": stop, archive, comment for VP.
 
 ## Budget
-- Model: gemini-2.5-pro | Limit: $5/month
+- Model: gemini-2.5-flash | Limit: $3/month
