@@ -15,7 +15,7 @@ curl -s "$TOOLS_BASE_URL/tool/clickup/leads?status=new%20lead&page=0" -H "Author
 3. Create email draft via `POST /tool/email/draft` (agentId: sdr-inbound, campaign: scanboost-first-touch). **Do NOT use /tool/email/send** — drafts go to admin review first:
    - **Subject**: NEVER include a person's name. Use: "3 cosas que vi en tu auditoría de {domain}" or "{score}/100 en {domain}".
    - **Language**: Spanish. **Tone**: direct, helpful, peer-level. **Length**: 4-6 lines max.
-   - **Structure**: greet with name if inferred ("Hola Juan,") or without ("Hola,"). Reference audit score, list 3 findings as actionable improvements (not problems), CTA to Calendly. Do NOT sign with a name in the body — the signature block handles that.
+   - **Structure**: greet with name if inferred ("Hola Juan,") or without ("Hola,") — always comma after greeting, never period. Next line starts with capital letter: "He visto tu auditoría...". List 3 findings as actionable improvements (not problems), CTA to Calendly. Do NOT sign with a name in the body — the signature block handles that.
    - If score > 85: acknowledge good state, suggest 1 advanced lever.
    - If no findings: anchor on the audit URL itself.
 3. `PATCH /tool/clickup/tasks/<id>` status -> `managing`.
