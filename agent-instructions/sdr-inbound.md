@@ -25,14 +25,9 @@ curl -s "$TOOLS_BASE_URL/tool/clickup/leads?status=new%20lead" -H "Authorization
 Create follow-up draft via `POST /tool/email/draft` — 2-line nudge (name + "call corta esta semana?"). After 3rd unanswered follow-up, move to `unqualified - archive` with comment "3 toques sin respuesta".
 
 ## Email format (MANDATORY)
-- Always send `html` (never `text`). Wrap body in `<div>` with `<p>` paragraphs.
-- Append SIGNATURE_HTML at the end of every email body:
-```html
-<p>--</p>
-<p><strong>Adrià Vidal</strong><br>
-Boost — IA-native growth consulting<br>
-<a href="https://weareboost.online">weareboost.online</a> · <a href="https://calendly.com/adria-vidal-prieto/30min">Reservar call</a></p>
-```
+- Always send `html` field (never just `text`). Wrap body in `<div>` with `<p>` paragraphs.
+- Do NOT include a signature — the server appends the Boost signature automatically.
+- Do NOT sign as "Adria" or "equipo Boost" in the email body. Just end with the CTA question.
 
 ## Guard rails
 - Max 5 leads/run, 3 follow-ups/lead. Never promise discounts or dates.
