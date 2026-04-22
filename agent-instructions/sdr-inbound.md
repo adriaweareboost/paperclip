@@ -21,8 +21,7 @@ curl -s "$TOOLS_BASE_URL/tool/clickup/leads?status=new%20lead&page=0" -H "Author
 3. `PATCH /tool/clickup/tasks/<id>` status -> `managing`.
 4. `POST /tool/clickup/tasks/<id>/comments` -> "Draft created at <timestamp>. Draft id: <draftId>. Pending admin review."
 
-### Step 3 — Follow-ups (tasks in `managing` 48h+ without reply)
-Create follow-up draft via `POST /tool/email/draft` — 2-line nudge (name + "call corta esta semana?"). After 3rd unanswered follow-up, move to `unqualified - archive` with comment "3 toques sin respuesta".
+**Once a lead is moved to `managing`, your job is DONE. Do NOT query `managing` leads. Do NOT send follow-ups. Only process `new lead` with Lead Source = Scan&Boost.**
 
 ## Email format (MANDATORY)
 - Always send `html` field (never just `text`). Wrap body in `<div>` with `<p>` paragraphs.
@@ -30,7 +29,7 @@ Create follow-up draft via `POST /tool/email/draft` — 2-line nudge (name + "ca
 - Do NOT sign as "Adria" or "equipo Boost" in the email body. Just end with the CTA question.
 
 ## Guard rails
-- Max 5 leads/run, 3 follow-ups/lead. Never promise discounts or dates.
+- Max 5 leads/run. Never promise discounts or dates.
 - On insults, RGPD complaints, or "dame de baja": stop, archive, comment for VP.
 
 ## Budget
